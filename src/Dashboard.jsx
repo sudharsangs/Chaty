@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Typography,List,ListItem,ListItemIcon,ListItemText} from '@material-ui/core';
+import {Paper,Typography,List,ListItem,Chip,ListItemText,Button,TextField} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -8,7 +8,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(3,2)
     },
     flex: {
-        display: 'flex'
+        display: 'flex',
+        alignItems: 'center'
     },
     topicsWindow: {
         width: '30%',
@@ -17,7 +18,8 @@ const useStyles = makeStyles(theme => ({
     },
     chatWindow: {
         width: '70%',
-        height: '300px'
+        height: '300px',
+        padding: '20px'
     },
     chatBox: {
         width: '85%'
@@ -55,7 +57,28 @@ export default function Dashboard() {
                                         } 
                                     </List>
                             </div>
-                            <div className={classes.chatWindow}></div>
+                            <div className={classes.chatWindow}>
+                                        {
+                                            [{from: 'user', msg: 'hello'}].map((chat, i) => {
+                                                return(
+                                                    <div className={classes.flex} key={i}>
+                                                             <Chip label={chat.from}  className={classes.chip}/>
+                                                             <Typography variant="p" component="p">{chat.msg}</Typography>
+                                                    </div>
+
+                                                )
+                                            })
+                                        } 
+                            </div>
+                    </div>
+                    <div className={classes.flex}>
+                                <TextField
+                                            className={classes.chatBox}
+                                            label="Send a chat"
+                                            //value={name}
+                                            //onChange={handleChange}
+                                />
+                                <Button variant="contained" color="primary">Send</Button>
                     </div>
                 </Paper>
             </div>
