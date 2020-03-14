@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Typography,List,ListItem,Chip,ListItemText,Button,TextField} from '@material-ui/core';
+import {CTX} from './Store';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,22 +35,30 @@ export default function Dashboard() {
 
     const classes = useStyles();
 
+    const [allChats] = React.useContext(CTX);
+    console.log({allChats});
+
+    const topics = Object.keys(allChats);
+    const [activeTopic,changeActiveTopic] = React.useState(topics[0]);
+
+    const [textValue, changeTextValue] = React.useState('');
+
         return (
             <div>
                 <Paper className={classes.root}>
-                    <Typography variant="h4" component="h4">
+                    <Typography variant="h4" component="h4" color="error">
                        Chaty
                     </Typography>
-                    <Typography variant="h5" component="h5">
-                        Placeholder
+                    <Typography variant="h5" component="h5" color="primary">
+                        {activeTopic}
                     </Typography>
                     <div className={classes.flex}>
                             <div className={classes.topicsWindow}>
                                     <List>
                                         {
-                                            ['topic'].map(topic => {
+                                            topics.map(topic => {
                                                 return(
-                                                    <ListItem key={topic} button>
+                                                    <ListItem onClick={e => {changeActiveTopic(e.target.innerText)}} key={topic} button>
                                                         <ListItemText primary={topic}/>
                                                     </ListItem>
                                                 )
@@ -59,11 +68,11 @@ export default function Dashboard() {
                             </div>
                             <div className={classes.chatWindow}>
                                         {
-                                            [{from: 'user', msg: 'hello'}].map((chat, i) => {
+                                            allChats[activeTopic].map((chat, i) => {
                                                 return(
                                                     <div className={classes.flex} key={i}>
                                                              <Chip label={chat.from}  className={classes.chip}/>
-                                                             <Typography variant="p" component="p">{chat.msg}</Typography>
+                                                             <Typography variant="body1" gutterBottom>{chat.msg}</Typography>
                                                     </div>
 
                                                 )
@@ -75,8 +84,8 @@ export default function Dashboard() {
                                 <TextField
                                             className={classes.chatBox}
                                             label="Send a chat"
-                                            //value={name}
-                                            //onChange={handleChange}
+                                            value={textValue}
+                                            onChange={(e) => changeTextValue(e.target.value)}
                                 />
                                 <Button variant="contained" color="primary">Send</Button>
                     </div>
